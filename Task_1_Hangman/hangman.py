@@ -82,7 +82,7 @@ def play_hangman():
 
     guessed_letters = set()
     wrong_guesses = set()
-    max_attempts = 10
+    max_attempts = 6
 
     print("\n===== WELCOME TO HANGMAN =====")
     print("Guess the hidden word one letter at a time.")
