@@ -1,82 +1,70 @@
 
 import random
 
-words = [
-    "PYTHON",
-    "PROGRAMMING",
-    "COMPUTER",
-    "DEVELOPER",
-    "DATABASE",
-    "ALGORITHM",
-    "FUNCTION",
-    "VARIABLE",
-    "MACHINE",
-    "SCIENCE"
-]
+
+def load_words():
+    with open("words.txt", "r") as file:
+        words = [
+            word.strip().upper()
+            for word in file
+            if word.strip().isalpha() and len(word.strip()) >= 4
+        ]
+
+    if not words:
+        raise ValueError("No valid words found in words.txt")
+
+    return words
+
 
 hangman_stages = [
     """
-     _______
-     |     |
-     |
-     |
-     |
-     |
-    _|_
+     +---+
+         |
+         |
+         |
+        ===
     """,
     """
-     _______
-     |     |
-     |     O
-     |
-     |
-     |
-    _|_
+     +---+
+     O   |
+         |
+         |
+        ===
     """,
     """
-     _______
-     |     |
-     |     O
-     |     |
-     |
-     |
-    _|_
+     +---+
+     O   |
+     |   |
+         |
+        ===
     """,
     """
-     _______
-     |     |
-     |     O
-     |    /|
-     |
-     |
-    _|_
+     +---+
+     O   |
+    /|   |
+         |
+        ===
     """,
     """
-     _______
-     |     |
-     |     O
-     |    /|\\
-     |
-     |
-    _|_
+     +---+
+     O   |
+    /|\\  |
+         |
+        ===
     """,
     """
-     _______
-     |     |
-     |     O
-     |    /|\\
-     |    /
-     |
-    _|_
+     +---+
+     O   |
+    /|\\  |
+    /    |
+        ===
     """,
     """
-     _______
-     |     |
-     |     O
-     |    /|\\
-     |    / \\
-     |
-    _|_
+     +---+
+     O   |
+    /|\\  |
+    / \\  |
+        ===
     """
 ]
 
@@ -89,51 +77,51 @@ def display_word(word, guessed_letters):
 
 
 def play_hangman():
+    words = load_words()
     word = random.choice(words)
+
     guessed_letters = set()
     wrong_guesses = set()
-    max_attempts = 6
+    max_attempts = 10
 
-    print("\n================================")
-    print("       WELCOME TO HANGMAN")
-    print("================================")
+    print("\n===== WELCOME TO HANGMAN =====")
+    print("Guess the hidden word one letter at a time.")
+    print("You have 6 incorrect attempts.")
 
     while len(wrong_guesses) < max_attempts:
 
         print(hangman_stages[len(wrong_guesses)])
 
         print("\nWord:", display_word(word, guessed_letters))
-        print("Incorrect guesses:", ", ".join(sorted(wrong_guesses)) or "None")
-        print("Attempts remaining:", max_attempts - len(wrong_guesses))
+        print("Guessed letters:", " ".join(sorted(guessed_letters)))
+        print("Incorrect attempts:", len(wrong_guesses), "/", max_attempts)
 
-        guess = input("\nGuess a letter: ").strip().upper()
+        guess = input("\nEnter a letter: ").strip().upper()
 
         if len(guess) != 1 or not guess.isalpha():
-            print("Please enter a single alphabetic letter.")
+            print("Please enter only one alphabetic letter.")
             continue
 
-        if guess in guessed_letters or guess in wrong_guesses:
-            print("You have already guessed that letter. Try another!")
+        if guess in guessed_letters:
+            print("You have already guessed that letter.")
             continue
+
+        guessed_letters.add(guess)
 
         if guess in word:
-            guessed_letters.add(guess)
             print("Correct guess!")
+
+            if all(letter in guessed_letters for letter in word):
+                print("\nCongratulations! You guessed the word:", word)
+                print("You won the game!")
+                return
 
         else:
             wrong_guesses.add(guess)
-            print("Incorrect guess!")
+            print("Wrong guess!")
 
-        if all(letter in guessed_letters for letter in word):
-            print("\n" + display_word(word, guessed_letters))
-            print("\nCongratulations! You guessed the word correctly!")
-            print("The hidden word was:", word)
-            print("You won!")
-            return
-
-    print(hangman_stages[6])
-    print("\nGAME OVER!")
-    print("You have used all 6 attempts.")
+    print(hangman_stages[max_attempts])
+    print("\nGame Over! You ran out of attempts.")
     print("The correct word was:", word)
 
 
@@ -141,9 +129,10 @@ def main():
     while True:
         play_hangman()
 
-        choice = input("\nDo you want to play again? (yes/no): ").strip().lower()
+        play_again = input(
+            "\nDo you want to play again? (yes/no): ").strip().lower()
 
-        if choice not in ("yes", "y"):
+        if play_again not in ("yes", "y"):
             print("\nThank you for playing Hangman!")
             break
 
