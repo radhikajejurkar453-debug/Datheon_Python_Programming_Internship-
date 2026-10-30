@@ -1,124 +1,152 @@
+# Hangman Game – Python
 
-# 🎮 Hangman Game – Python
+A simple, interactive, terminal-based Hangman game developed using Python as part of the **Datheon Python Programming Internship – Batch 01**.
 
 ## 📌 Project Overview
-Hangman is a terminal-based word guessing game developed using Python. The player must guess a randomly selected hidden word letter by letter within a maximum of 6 incorrect attempts.
 
-The game provides ASCII hangman graphics, tracks guessed letters, and displays winning or losing messages.
+Hangman is a word-guessing game in which the player tries to guess a hidden word one letter at a time. The player has a maximum of **6 incorrect attempts** to guess the complete word before the hangman drawing is completed.
+
+The game randomly selects a word from an external word list (`words.txt`) containing English words.
 
 ## 🎯 Objectives
-- Develop a simple interactive game using Python.
-- Understand random word selection.
-- Practice loops, conditional statements, and functions.
-- Implement sets for tracking guessed letters.
-- Apply input validation and error handling.
+
+- Develop a terminal-based word-guessing game using Python.
+- Implement random word selection.
+- Practice loops, conditional statements, functions, and sets.
+- Handle user input and prevent repeated guesses.
+- Apply basic game logic and problem-solving skills.
 
 ## ✨ Features
-- Random word selection using `random.choice()`.
-- Maximum 6 incorrect attempts.
-- ASCII gallows art that updates after incorrect guesses.
-- Displays correctly guessed letters.
+
+- Random word selection from `words.txt`.
+- Letter-by-letter word guessing.
+- Maximum of 6 incorrect attempts.
+- ASCII hangman drawing updated after each incorrect guess.
+- Displays correctly guessed letters and hidden letters.
 - Tracks previously guessed letters.
 - Prevents duplicate guesses from reducing attempts.
 - Validates user input.
-- Displays victory and defeat messages.
-- Option to play again.
+- Option to play multiple rounds.
 
 ## 🛠️ Technologies Used
-- Python 3
-- Random Module
-- VS Code
+
+- **Programming Language:** Python
+- **Modules:** `random`
+- **Concepts:** Functions, Loops, Conditional Statements, Lists, Sets, File Handling, and Exception Handling.
 
 ## 📂 Project Structure
 
 ```text
-Task_1_Hangman/
+Datheon_Python_Programming_Internship/
 │
 ├── hangman.py
+├── words.txt
 └── README.md
 ```
 
-## ⚙️ How to Run the Project
+**File Description:**
+- `hangman.py` – Contains the main game logic and functions.
+- `words.txt` – Contains the English word list used for random word selection.
+- `README.md` – Project documentation and instructions.
 
-**Step 1:** Install Python 3 on your computer.
+## ▶️ How to Run the Project
 
-**Step 2:** Clone the repository.
+### Step 1: Install Python
+
+Make sure Python is installed on your system.
+
+### Step 2: Download or Clone the Repository
 
 ```bash
 git clone YOUR_GITHUB_REPOSITORY_URL
 ```
 
-**Step 3:** Open the project folder.
+### Step 3: Open the Project Folder
 
 ```bash
-cd Task_1_Hangman
+cd Datheon_Python_Programming_Internship
 ```
 
-**Step 4:** Run the Python program.
+### Step 4: Run the Game
 
 ```bash
 python hangman.py
 ```
 
+**Note:** Keep `hangman.py` and `words.txt` in the same project folder.
+
 ## 🎮 How to Play
-1. Run the program in the terminal.
-2. A random hidden word will be selected.
+
+1. Run the Python program.
+2. The game randomly selects a hidden English word.
 3. Enter one alphabetic letter at a time.
-4. Correct guesses reveal the letters.
-5. Incorrect guesses update the hangman drawing and reduce your attempts.
-6. Guess the complete word within 6 incorrect attempts to win.
-7. Choose whether to play again.
+4. Correct guesses reveal the letter in the word.
+5. Incorrect guesses update the hangman drawing.
+6. You can make up to 6 incorrect guesses.
+7. Guess the complete word to win.
+8. If you use all 6 attempts, the game ends and reveals the correct word.
+9. Choose whether to play another round.
 
 ## 💻 Sample Output
 
 ```text
-================================
-       WELCOME TO HANGMAN
-================================
+===== WELCOME TO HANGMAN =====
+Guess the hidden word one letter at a time.
+You have 6 incorrect attempts.
 
 Word: _ _ _ _ _ _
-Incorrect guesses: None
-Attempts remaining: 6
+Guessed letters:
+Incorrect attempts: 0 / 6
 
-Guess a letter: P
+Enter a letter: P
 Correct guess!
 
 Word: P _ _ _ _ _
-Attempts remaining: 6
+Guessed letters: P
+Incorrect attempts: 0 / 6
 
-Guess a letter: X
-Incorrect guess!
+Enter a letter: Z
+Wrong guess!
 
-Attempts remaining: 5
+Incorrect attempts: 1 / 6
 ```
 
-## 📚 Concepts Used
-- Variables and Data Types
-- Lists
-- Sets
-- Random Module
-- While Loops
-- If-Else Statements
-- User Input and Validation
-- Functions
-- String Manipulation
+*Note: The actual word and output will vary because the game selects words randomly.*
 
-## 🎓 Internship Information
+## 📚 Python Concepts Used
 
-**Organization:** Datheon  
-**Program:** Python Programming Internship  
-**Batch:** 01  
-**Task:** Task 1 – Hangman Game  
-**Duration:** 4 Weeks
+| Concept | Application |
+|---|---|
+| Functions | Organizing the game into reusable blocks |
+| Random Module | Selecting a random word |
+| Lists | Storing hangman drawing stages |
+| Sets | Tracking guessed letters |
+| Loops | Repeating the game until it ends |
+| Conditional Statements | Checking correct and incorrect guesses |
+| File Handling | Reading words from `words.txt` |
+| Input Validation | Accepting only one alphabetic letter |
 
-## 👩‍💻 Author
+## 🚀 Future Improvements
+
+- Add Easy, Medium, and Hard difficulty levels.
+- Add a scoring system.
+- Display hints for difficult words.
+- Add a graphical user interface (GUI).
+- Track the player's winning streak.
+
+## 👩‍💻 Internship Details
+
+- **Organization:** Datheon
+- **Program:** Python Programming Internship
+- **Batch:** 01
+- **Task:** Task 1 – Hangman Game
+- **Duration:** 4 Weeks
+
+## 👤 Author
 
 **Radhika Jejurkar**  
 B.Sc. Data Science Student
 
-GitHub: [radhikajejurkar453-debug](https://github.com/radhikajejurkar453-debug)
-
 ---
 
-⭐ Developed as part of the Datheon Python Programming Internship.
-
+*This project was developed as part of the Datheon Python Programming Internship – Batch 01.*
