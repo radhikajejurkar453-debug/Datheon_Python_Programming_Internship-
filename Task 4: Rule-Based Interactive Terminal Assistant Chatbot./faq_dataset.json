@@ -1,0 +1,56 @@
+{
+    "greetings": [
+        "hello",
+        "hi",
+        "hey",
+        "good morning",
+        "good afternoon",
+        "good evening",
+        "how are you",
+        "hello there",
+        "hi there",
+        "good day"
+    ],
+    "faqs": [
+        {
+            "question": "What are your hours of operation?",
+            "answer": "We operate Monday through Friday from 9:00 AM to 6:00 PM IST."
+        },
+        {
+            "question": "How do I submit my internship project?",
+            "answer": "You can submit your public GitHub repository link through your Student Workspace."
+        },
+        {
+            "question": "When will I receive my certificate?",
+            "answer": "Certificates are reviewed and issued within 3-5 business days after your code review."
+        },
+        {
+            "question": "Where should I upload my project?",
+            "answer": "You can submit your public GitHub repository link through your Student Workspace."
+        },
+        {
+            "question": "Do I need a public GitHub repository?",
+            "answer": "Yes. The provided submission instructions specify that you should submit a public GitHub repository link through your Student Workspace."
+        },
+        {
+            "question": "How many days does certificate processing take?",
+            "answer": "Certificates are reviewed and issued within 3-5 business days after your code review."
+        },
+        {
+            "question": "Are you open on weekends?",
+            "answer": "The provided business hours specify Monday through Friday, 9:00 AM to 6:00 PM IST. Weekend operating hours are not specified."
+        },
+        {
+            "question": "What is the return policy?",
+            "answer": "Return and refund policy details are not available in the provided FAQ dataset."
+        },
+        {
+            "question": "Can I get help with my internship project?",
+            "answer": "Please check your Student Workspace for the available project instructions and submission information."
+        },
+        {
+            "question": "What should I do if my question is not answered?",
+            "answer": "Sorry, the requested information is not available in my FAQ dataset. Please refer to your Student Workspace for official information."
+        }
+    ]
+}
