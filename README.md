@@ -207,4 +207,16 @@ Through these projects, I gained practical experience in:
 
 This internship helped me strengthen my Python programming fundamentals and understand how programming concepts can be applied to practical problems.
 
-Working on these five assignments improved my ability to design modular applications, handle data, automate repetitive tasks, implement OOP principles, and document projects
+Working on these five assignments improved my ability to design modular applications, handle data, automate repetitive tasks, implement OOP principles, and document projects using GitHub.
+
+## Acknowledgement
+
+I would like to thank **Datheon** for providing this opportunity to work on practical Python programming assignments and strengthen my technical skills through hands-on learning.
+
+---
+
+**Internship:** Datheon Python Programming Internship  
+**Domain:** Python & AI Applications  
+**Completed Projects:** 5 Tasks  
+**GitHub:**[ [View My Repository](https://github.com/radhikajejurkar453-debug/Datheon_Python_Programming_Internship-)]
+
