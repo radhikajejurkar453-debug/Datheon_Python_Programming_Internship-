@@ -1,174 +1,163 @@
 
-from models import Book, Magazine, DigitalMedia
-from inventory import InventoryManager
+from abc import ABC, abstractmethod
 
 
-def read_price():
-    while True:
-        try:
-            price = float(input("Enter price (Rs.): "))
+class Item(ABC):
 
-            if price <= 0:
-                print("Price must be greater than zero.")
-                continue
+    def __init__(self, item_id, title, price):
+        self.item_id = str(item_id).strip()
+        self.title = str(title).strip()
+        self.__price = price
+        self.__borrow_date = None
+        self.__is_borrowed = False
 
-            return price
+        if not self.item_id:
+            raise ValueError("Item ID cannot be empty.")
 
-        except ValueError:
-            print("Please enter a valid numeric price.")
+        if not self.title:
+            raise ValueError("Item title cannot be empty.")
 
+    @property
+    def price(self):
+        return self.__price
 
-def add_book(manager):
-    print("\n--- ADD BOOK ---")
+    @price.setter
+    def price(self, value):
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            raise ValueError("Price must be a valid number.")
 
-    item_id = input("Enter Book ID: ").strip()
-    title = input("Enter Book Title: ").strip()
-    author = input("Enter Author Name: ").strip()
-    price = read_price()
+        if value <= 0:
+            raise ValueError("Price must be greater than zero.")
 
-    book = Book(item_id, title, author, price)
-    manager.add_item(book)
+        self.__price = float(value)
 
-    print("\nBook added successfully.")
+    @property
+    def borrow_date(self):
+        return self.__borrow_date
 
+    @property
+    def is_borrowed(self):
+        return self.__is_borrowed
 
-def add_magazine(manager):
-    print("\n--- ADD MAGAZINE ---")
+    def checkout(self):
+        from datetime import date
 
-    item_id = input("Enter Magazine ID: ").strip()
-    title = input("Enter Magazine Title: ").strip()
-    issue = input("Enter Issue Number: ").strip()
-    price = read_price()
+        if self.__is_borrowed:
+            raise ValueError("This item is already checked out.")
 
-    magazine = Magazine(item_id, title, issue, price)
-    manager.add_item(magazine)
+        self.__borrow_date = date.today()
+        self.__is_borrowed = True
 
-    print("\nMagazine added successfully.")
+    def return_item(self):
+        from datetime import date
 
+        if not self.__is_borrowed:
+            raise ValueError("This item is not currently checked out.")
 
-def add_digital_media(manager):
-    print("\n--- ADD DIGITAL MEDIA ---")
+        days_borrowed = (date.today() - self.__borrow_date).days
+        days_borrowed = max(1, days_borrowed)
 
-    item_id = input("Enter Digital Media ID: ").strip()
-    title = input("Enter Title: ").strip()
-    file_format = input("Enter File Format: ").strip()
+        fee = self.calculate_fee(days_borrowed)
 
-    duration = int(input("Enter Duration (minutes): "))
-    price = read_price()
+        self.__borrow_date = None
+        self.__is_borrowed = False
 
-    media = DigitalMedia(
-        item_id,
-        title,
-        file_format,
-        duration,
-        price
-    )
+        return fee
 
-    manager.add_item(media)
+    @abstractmethod
+    def calculate_fee(self, days_borrowed):
+        pass
 
-    print("\nDigital media added successfully.")
+    @abstractmethod
+    def display_metadata(self):
+        pass
 
+    def __str__(self):
+        status = "Borrowed" if self.is_borrowed else "Available"
+        return f"{self.title} | ID: {self.item_id} | Status: {status}"
 
-def search_item(manager):
-    item_id = input("\nEnter Item ID to search: ").strip()
-    item = manager.search_item(item_id)
+    def __repr__(self):
+        return (
+            f"{self.__class__.__name__}("
+            f"item_id={self.item_id!r}, "
+            f"title={self.title!r}, "
+            f"price={self.price!r})"
+        )
 
-    if item:
-        print("\nItem Found:")
-        print(item.display_metadata())
-        print("Status:", "Borrowed" if item.is_borrowed else "Available")
-    else:
-        print("\nItem not found.")
+    def __eq__(self, other):
+        if not isinstance(other, Item):
+            return NotImplemented
 
-
-def checkout_item(manager):
-    item_id = input("\nEnter Item ID to checkout: ").strip()
-
-    item = manager.checkout_item(item_id)
-
-    print(f"\nSuccessfully checked out: {item.title}")
-
-
-def return_item(manager):
-    item_id = input("\nEnter Item ID to return: ").strip()
-
-    fee = manager.return_item(item_id)
-
-    print("\nItem returned successfully.")
-    print(f"Borrowing Fee: Rs. {fee:.2f}")
+        return (
+            type(self) is type(other)
+            and self.item_id == other.item_id
+        )
 
 
-def show_menu():
-    print("\n")
-    print("=" * 50)
-    print("       SMART INVENTORY & ASSET SYSTEM")
-    print("=" * 50)
-    print("1. Add Book")
-    print("2. Add Magazine")
-    print("3. Add Digital Media")
-    print("4. Display All Inventory")
-    print("5. Search Item")
-    print("6. Checkout Item")
-    print("7. Return Item")
-    print("8. Generate Audit Report")
-    print("9. Show Total Inventory Count")
-    print("0. Exit")
-    print("=" * 50)
+class Book(Item):
+
+    DAILY_FEE = 5.0
+
+    def __init__(self, item_id, title, author, price):
+        super().__init__(item_id, title, price)
+        self.author = author.strip()
+
+    def calculate_fee(self, days_borrowed):
+        return max(0, days_borrowed) * self.DAILY_FEE
+
+    def display_metadata(self):
+        return (
+            f"Type: Book | ID: {self.item_id} | "
+            f"Title: {self.title} | Author: {self.author} | "
+            f"Price: Rs. {self.price:.2f} | "
+            f"Daily Fee: Rs. {self.DAILY_FEE:.2f}"
+        )
 
 
-def main():
-    manager = InventoryManager()
+class Magazine(Item):
 
-    print("\nWelcome to the Smart Inventory & Asset System!")
+    DAILY_FEE = 3.0
 
-    while True:
-        show_menu()
+    def __init__(self, item_id, title, issue_number, price):
+        super().__init__(item_id, title, price)
+        self.issue_number = str(issue_number).strip()
 
-        choice = input("Enter your choice: ").strip()
+    def calculate_fee(self, days_borrowed):
+        return max(0, days_borrowed) * self.DAILY_FEE
 
-        try:
-            if choice == "1":
-                add_book(manager)
-
-            elif choice == "2":
-                add_magazine(manager)
-
-            elif choice == "3":
-                add_digital_media(manager)
-
-            elif choice == "4":
-                manager.display_inventory()
-
-            elif choice == "5":
-                search_item(manager)
-
-            elif choice == "6":
-                checkout_item(manager)
-
-            elif choice == "7":
-                return_item(manager)
-
-            elif choice == "8":
-                manager.generate_audit_report()
-
-            elif choice == "9":
-                print(f"\nTotal Items: {len(manager)}")
-                print(manager)
-
-            elif choice == "0":
-                print("\nThank you for using the Inventory System.")
-                print("Goodbye!")
-                break
-
-            else:
-                print("\nInvalid choice. Please select a valid option.")
-
-        except (ValueError, TypeError) as error:
-            print(f"\nError: {error}")
-
-        except Exception as error:
-            print(f"\nUnexpected error: {error}")
+    def display_metadata(self):
+        return (
+            f"Type: Magazine | ID: {self.item_id} | "
+            f"Title: {self.title} | Issue: {self.issue_number} | "
+            f"Price: Rs. {self.price:.2f} | "
+            f"Daily Fee: Rs. {self.DAILY_FEE:.2f}"
+        )
 
 
-if __name__ == "__main__":
-    main()
+class DigitalMedia(Item):
+
+    DAILY_FEE = 10.0
+
+    def __init__(self, item_id, title, file_format, duration_minutes, price):
+        super().__init__(item_id, title, price)
+        self.file_format = file_format.strip().upper()
+
+        if not isinstance(duration_minutes, int) or isinstance(duration_minutes, bool):
+            raise ValueError("Duration must be a whole number.")
+
+        if duration_minutes <= 0:
+            raise ValueError("Duration must be greater than zero.")
+
+        self.duration_minutes = duration_minutes
+
+    def calculate_fee(self, days_borrowed):
+        return max(0, days_borrowed) * self.DAILY_FEE
+
+    def display_metadata(self):
+        return (
+            f"Type: Digital Media | ID: {self.item_id} | "
+            f"Title: {self.title} | Format: {self.file_format} | "
+            f"Duration: {self.duration_minutes} minutes | "
+            f"Price: Rs. {self.price:.2f} | "
+            f"Daily Fee: Rs. {self.DAILY_FEE:.2f}"
+        )
